@@ -21,11 +21,14 @@ slightly more documentation in the README
 (function() {
     d3.urllib = {
 	encoder: function() {
-	    var varname = "tmp"
-	    varval = [];
+	    var varname = "tmp";
+	    var varval = [];
+	    //var that = this;
 	    
 	    function urllib(d) {
 		// nothing yet
+		//console.log(this);
+		//console.log(that);
 		return {current: varval,};
 	    }
 
@@ -42,10 +45,16 @@ slightly more documentation in the README
 		}
 
 		baseUrl = window.location.origin+window.location.pathname;
-		var tmpList = "["+varval[0]
-		for (var i=1; i<varval.length; i++) { tmpList += ","+varval[i]; }
-		tmpList+="]"
-		GET[varname] = tmpList;
+		var tmpStr = ""
+		if (typeof varval == 'string' || varval instanceof String)
+		{ tmpStr+=varval; }
+		else
+		{
+		    tmpStr += "["+varval[0]
+		    for (var i=1; i<varval.length; i++) { tmpStr += ","+varval[i]; }
+		    tmpStr+="]"
+		}
+		GET[varname] = tmpStr;
 
 		var urlString = ""
 		for (var key in GET) {
@@ -78,8 +87,8 @@ slightly more documentation in the README
 	    return urllib;
 	},
 	decoder: function() {
-	    var varname = "tmp"
-	    varresult = [];
+	    var varname = "tmp";
+	    var varresult = [];
 	    
 	    function urllib(d) {
 		parseurl();
@@ -117,10 +126,10 @@ slightly more documentation in the README
 	    urllib.varresult = function(_) {
 		if (!arguments.length) return varresult;
 		varresult = _;
-		return parseurl();
+		return urllib;
 	    }
 
-	    return parseurl();
+	    return urllib;
 	}
     }
 })();
